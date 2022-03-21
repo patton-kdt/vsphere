@@ -93,7 +93,7 @@
             
             set interfaces ethernet eth0 address dhcp
             set interfaces ethernet eth0 description Outside
-            set protocols static route 0.0.0.0/0 next-hop 172.0.10.1
+            set protocols static route 0.0.0.0/0 next-hop 200.200.200.254
             
             set system name-server 172.0.10.2
             set system ntp server kr.pool.ntp.org
