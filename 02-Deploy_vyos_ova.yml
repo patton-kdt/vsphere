@@ -1,6 +1,6 @@
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vcenter_folder_module.html#ansible-collections-community-vmware-vcenter-folder-module
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_deploy_ovf_module.html#ansible-collections-community-vmware-vmware-deploy-ovf-module
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vcenter_folder_module.html#ansible-collections-community-vmware-vcenter-folder-module 
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_deploy_ovf_module.html#ansible-collections-community-vmware-vmware-deploy-ovf-module 
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module 
 
 ---
 - hosts: localhost
@@ -10,7 +10,7 @@
     vcenter_hostname: "200.200.200.251"
     vcenter_username: "administrator@vsphere.kh"
     vcenter_password: "VMware1!"
-    datacenter_name: "vSAN Datacenter"    
+    datacenter_name: "vSAN Datacenter"
 ##    esxi_hostname: "200.200.200.250"
     esxi_username: "root"
     esxi_password: "VMware1!"
@@ -113,3 +113,4 @@
           timeout: 180
       delegate_to: localhost
       register: shell_command_with_wait_timeout
+      

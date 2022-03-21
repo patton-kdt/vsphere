@@ -1,4 +1,4 @@
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module 
 
 ---
 - hosts: localhost
@@ -9,7 +9,6 @@
     vcenter_password: "VMware1!"
     datacenter_name: "vSAN Datacenter"
 ##    student_ID: "S00"
-    full_folder_prefix: "vSAN Datacenter/vm/Students/"
 
   vars_prompt:
     - name: student_ID
@@ -24,8 +23,6 @@
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
           validate_certs: 'false'
-##          datacenter: '{{ datacenter_name }}'
-##          folder: "{{ full_folder_prefix + student_ID }}"
           vm_id: "{{ student_ID + '-DC' }}"
           vm_id_type: vm_name
           vm_username: 'Administrator'
@@ -44,8 +41,6 @@
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
           validate_certs: 'false'
-##          datacenter: '{{ datacenter_name }}'
-##          folder: "{{ full_folder_prefix + student_ID }}"
           vm_id: "{{ student_ID + '-DC' }}"
           vm_id_type: vm_name
           vm_username: 'Administrator'
@@ -65,8 +60,6 @@
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
           validate_certs: 'false'
-##          datacenter: '{{ datacenter_name }}'
-##          folder: "{{ full_folder_prefix + student_ID }}"
           vm_id: "{{ student_ID + '-DC' }}"
           vm_id_type: vm_name
           vm_username: 'Administrator'

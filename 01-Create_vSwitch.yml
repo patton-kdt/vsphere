@@ -1,5 +1,5 @@
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vswitch_module.html#ansible-collections-community-vmware-vmware-vswitch-module
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_portgroup_module.html
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vswitch_module.html#ansible-collections-community-vmware-vmware-vswitch-module 
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_portgroup_module.html 
 
 ---
 - hosts: localhost

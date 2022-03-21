@@ -1,5 +1,5 @@
 # 정방향 조회 도메인 만들기 
-# Add-DnsServerPrimaryZone -Name "vclass.local" -ZoneFile "vclass.local.dns"
+# Add-DnsServerPrimaryZone -Name "vclass.local" -ZoneFile "vclass.local.dns" 
 
 # 역방향 조회 도메인 만들기 
 Add-DnsServerPrimaryZone -NetworkID 10.10.1.0/24 -ZoneFile "1.10.10.in-addr.arpa.dns"

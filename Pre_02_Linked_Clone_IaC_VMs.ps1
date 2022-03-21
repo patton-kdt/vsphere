@@ -1,5 +1,5 @@
-## https://developer.vmware.com/docs/powercli/latest/vmware.vimautomation.core/commands/new-vm/#CloneVm
-## https://vdc-repo.vmware.com/vmwb-repository/dcr-public/d402b7ed-b345-4fda-880d-a48e8885e910/b6ff10a7-3769-4346-8a83-d92d99d6caf3/doc/New-VM.html
+## https://developer.vmware.com/docs/powercli/latest/vmware.vimautomation.core/commands/new-vm/#CloneVm 
+## https://vdc-repo.vmware.com/vmwb-repository/dcr-public/d402b7ed-b345-4fda-880d-a48e8885e910/b6ff10a7-3769-4346-8a83-d92d99d6caf3/doc/New-VM.html 
 
 Get-ExecutionPolicy -List
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -21,7 +21,7 @@ Connect-VIServer -Server 200.200.200.251 -Protocol https -User administrator@vsp
 $ParentFolder = "Students"
 $TemplateVM = "Temp-Win2019"
 $LinkedSnapshot = "IaC"
-## $datastores =  'Local-250', 'Local-246', 'Local-247', 'Local-248', 'Local-249'
+## $datastores =  'Local-250', 'Local-246', 'Local-247', 'Local-248', 'Local-249' 
 $hosts = '200.200.200.250', '200.200.200.246', '200.200.200.247', '200.200.200.248', '200.200.200.249' 
 
 

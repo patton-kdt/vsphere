@@ -1,4 +1,4 @@
-## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_file_operation_module.html#ansible-collections-community-vmware-vmware-guest-file-operation-module
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_file_operation_module.html#ansible-collections-community-vmware-vmware-guest-file-operation-module 
 
 ---
 - hosts: localhost
