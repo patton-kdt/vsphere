@@ -1,0 +1,80 @@
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module
+
+---
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /bin/python3
+    vcenter_hostname: "200.200.200.251"
+    vcenter_username: "administrator@vsphere.kh"
+    vcenter_password: "VMware1!"
+    datacenter_name: "vSAN Datacenter"
+##    student_ID: "S00"
+    full_folder_prefix: "vSAN Datacenter/vm/Students/"
+
+  vars_prompt:
+    - name: student_ID
+      prompt: What is your student ID (ex:S00)?
+      private: no
+
+
+  tasks: 
+    - name: Install_WindowsFeatures_AD-DS
+      community.vmware.vmware_vm_shell:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+##          datacenter: '{{ datacenter_name }}'
+##          folder: "{{ full_folder_prefix + student_ID }}"
+          vm_id: "{{ student_ID + '-DC' }}"
+          vm_id_type: vm_name
+          vm_username: 'Administrator'
+          vm_password: 'VMware1!'
+          vm_shell: 'c:\windows\system32\windowspowershell\v1.0\powershell.exe'
+          vm_shell_args: '-command "(Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools)"'
+          vm_shell_cwd: 'c:\Users\Administrator'
+          wait_for_process: True
+          timeout: 180
+      delegate_to: localhost
+      register: shell_command_with_wait_timeout
+
+    - name: Import_Module_ADDSDeployment
+      community.vmware.vmware_vm_shell:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+##          datacenter: '{{ datacenter_name }}'
+##          folder: "{{ full_folder_prefix + student_ID }}"
+          vm_id: "{{ student_ID + '-DC' }}"
+          vm_id_type: vm_name
+          vm_username: 'Administrator'
+          vm_password: 'VMware1!'
+          vm_shell: 'c:\windows\system32\windowspowershell\v1.0\powershell.exe'
+          vm_shell_args: '-command "Import-Module ADDSDeployment"'
+          vm_shell_cwd: 'c:\Users\Administrator'
+          wait_for_process: True
+          timeout: 180
+      delegate_to: localhost
+      register: shell_command_with_wait_timeout
+
+
+    - name: Install_First_ADDSForest
+      community.vmware.vmware_vm_shell:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+##          datacenter: '{{ datacenter_name }}'
+##          folder: "{{ full_folder_prefix + student_ID }}"
+          vm_id: "{{ student_ID + '-DC' }}"
+          vm_id_type: vm_name
+          vm_username: 'Administrator'
+          vm_password: 'VMware1!'
+          vm_shell: 'c:\windows\system32\windowspowershell\v1.0\powershell.exe'
+          vm_shell_args: '-command "(Install-ADDSForest -CreateDnsDelegation:$false -DatabasePath C:\Windows\NTDS -DomainMode WinThreshold -DomainName vclass.local -DomainNetbiosName VCLASS -ForestMode WinThreshold -InstallDns:$true -LogPath C:\Windows\NTDS -NoRebootOnCompletion:$false -SysvolPath C:\Windows\SYSVOL -Force:$true -SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText "VMware1!" -force)")"'
+          vm_shell_cwd: 'c:\Users\Administrator'
+          wait_for_process: True
+          timeout: 180
+      delegate_to: localhost
+      register: shell_command_with_wait_timeout
