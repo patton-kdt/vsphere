@@ -10,6 +10,7 @@
     vcenter_hostname: "200.200.200.251"
     vcenter_username: "administrator@vsphere.kh"
     vcenter_password: "VMware1!"
+    datacenter_name: "vSAN Datacenter"    
 ##    esxi_hostname: "200.200.200.250"
     esxi_username: "root"
     esxi_password: "VMware1!"
