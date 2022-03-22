@@ -53,8 +53,8 @@
           username: '{{ esxi_username }}'
           password: '{{ esxi_password }}'
           validate_certs: 'false'
-          datacenter: '{{ datacenter_name }}'
-          folder: "{{ full_folder_prefix + student_ID }}"
+#          datacenter: '{{ datacenter_name }}'
+#          folder: "{{ full_folder_prefix + student_ID }}"
 #          esxi_hostname: '{{ esxi_hostname }}'
           datastore: 'vsanDatastore'
           name: "{{ student_ID + '-Router' }}"
@@ -62,6 +62,17 @@
           power_on: yes
           ovf: /mnt/c/temp-vyos-1.4.ova    
       delegate_to: localhost
+
+
+- name: Move VyOS to Student Folder
+  community.vmware.vmware_guest_move:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    datacenter: '{{ datacenter_name }}'
+    name: "{{ student_ID + '-Router' }}"
+    dest_folder: "{{ full_folder_prefix + student_ID }}"
+  delegate_to: localhost
 
 
     - name: Waiting 60 seconds for completing bootup
