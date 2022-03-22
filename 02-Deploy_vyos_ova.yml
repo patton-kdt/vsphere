@@ -70,7 +70,7 @@
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
           validate_certs: 'false'
-          vm_name: '{{ student_ID + '-Router' }}'
+          vm_name: "{{ student_ID + '-Router' }}"
           destination_host: '{{ esxi_hostname }}'
       delegate_to: localhost
 
