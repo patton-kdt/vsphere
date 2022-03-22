@@ -54,21 +54,31 @@
           password: '{{ vcenter_password }}'
           validate_certs: 'false'
           datacenter: '{{ datacenter_name }}'
-          folder: "{{ full_folder_prefix + student_ID }}"
+          folder: '{{ full_folder_prefix + student_ID }}'
           esxi_hostname: '{{ esxi_hostname }}'
           datastore: 'vsanDatastore'
-          name: "{{ student_ID + '-Router' }}"
+          name: '{{ student_ID + '-Router' }}''
           networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
 #          power_on: yes
           ovf: /mnt/c/temp-vyos-1.4.ova    
       delegate_to: localhost
+
+    - name: Perform vMotion of virtual machine
+      community.vmware.vmware_vmotion:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          vm_name: '{{ student_ID + '-Router' }}'
+          destination_host: '{{ esxi_hostname }}'
+      delegate_to: localhost
+
 
     - name: Set the state of a virtual machine to poweroff
       community.vmware.vmware_guest_powerstate:
           hostname: "{{ vcenter_hostname }}"
           username: "{{ vcenter_username }}"
           password: "{{ vcenter_password }}"
-          folder: "/{{ datacenter_name }}/vm/my_folder"
+          folder: '{{ full_folder_prefix + student_ID }}'
           name: "{{ student_ID + '-Router' }}"
           state: powered-on
       delegate_to: localhost
