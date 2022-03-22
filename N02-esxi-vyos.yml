@@ -49,30 +49,39 @@
 
     - name: Deploy VyOS ova
       community.vmware.vmware_deploy_ovf:
-          hostname: '{{ esxi_hostname }}'
-          username: '{{ esxi_username }}'
-          password: '{{ esxi_password }}'
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
           validate_certs: 'false'
-#          datacenter: '{{ datacenter_name }}'
-#          folder: "{{ full_folder_prefix + student_ID }}"
-#          esxi_hostname: '{{ esxi_hostname }}'
+          datacenter: '{{ datacenter_name }}'
+          folder: "{{ full_folder_prefix + student_ID }}"
+          esxi_hostname: '{{ esxi_hostname }}'
           datastore: 'vsanDatastore'
           name: "{{ student_ID + '-Router' }}"
           networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
-          power_on: yes
+#          power_on: yes
           ovf: /mnt/c/temp-vyos-1.4.ova    
       delegate_to: localhost
 
+    - name: Set the state of a virtual machine to poweroff
+      community.vmware.vmware_guest_powerstate:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          folder: "/{{ datacenter_name }}/vm/my_folder"
+          name: "{{ student_ID + '-Router' }}"
+          state: powered-on
+      delegate_to: localhost
 
-- name: Move VyOS to Student Folder
-  community.vmware.vmware_guest_move:
-    hostname: "{{ vcenter_hostname }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    datacenter: '{{ datacenter_name }}'
-    name: "{{ student_ID + '-Router' }}"
-    dest_folder: "{{ full_folder_prefix + student_ID }}"
-  delegate_to: localhost
+#- name: Move VyOS to Student Folder
+#  community.vmware.vmware_guest_move:
+#    hostname: "{{ vcenter_hostname }}"
+#    username: "{{ vcenter_username }}"
+#    password: "{{ vcenter_password }}"
+#    datacenter: '{{ datacenter_name }}'
+#    name: "{{ student_ID + '-Router' }}"
+#    dest_folder: "{{ full_folder_prefix + student_ID }}"
+#  delegate_to: localhost
 
 
     - name: Waiting 60 seconds for completing bootup
