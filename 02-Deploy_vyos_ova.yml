@@ -59,8 +59,31 @@
           datastore: 'vsanDatastore'
           name: "{{ student_ID + '-Router' }}"
           networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
-          power_on: yes
+          power_on: no
           ovf: /mnt/c/temp-vyos-1.4.ova    
+      delegate_to: localhost
+
+
+    - name: Perform vMotion of virtual machine
+      community.vmware.vmware_vmotion:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+          vm_name: '{{ student_ID + '-Router' }}'
+          destination_host: '{{ esxi_hostname }}'
+      delegate_to: localhost
+
+
+    - name: Set the state of a virtual machine to poweroff
+      community.vmware.vmware_guest_powerstate:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          validate_certs: 'false'
+          folder: '{{ full_folder_prefix + student_ID }}'
+          name: "{{ student_ID + '-Router' }}"
+          state: powered-on
       delegate_to: localhost
 
 
@@ -95,7 +118,7 @@
             set interfaces ethernet eth0 description Outside
             set protocols static route 0.0.0.0/0 next-hop 200.200.200.254
             
-            set system name-server 172.0.10.2
+            set system name-server 200.200.200.245
             set system ntp server kr.pool.ntp.org
             
             set interfaces ethernet eth1 vif 101 description 'VLAN 101 - Site A Management'
