@@ -1,0 +1,115 @@
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vcenter_folder_module.html#ansible-collections-community-vmware-vcenter-folder-module 
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_deploy_ovf_module.html#ansible-collections-community-vmware-vmware-deploy-ovf-module 
+## https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_vm_shell_module.html#ansible-collections-community-vmware-vmware-vm-shell-module 
+
+---
+- hosts: localhost
+  
+  vars:
+    ansible_python_interpreter: /bin/python3
+    vcenter_hostname: "200.200.200.251"
+    vcenter_username: "administrator@vsphere.kh"
+    vcenter_password: "VMware1!"
+    datacenter_name: "vSAN Datacenter"
+##    esxi_hostname: "200.200.200.250"
+    esxi_username: "root"
+    esxi_password: "VMware1!"
+##    student_ID: "S00"
+    folder_prefix: "Students/"
+    full_folder_prefix: "vSAN Datacenter/vm/Students/"
+    public_net: "VM Network"
+    private_net: "{{ student_ID + '-Trunk' }}"
+
+
+  vars_prompt:
+    - name: student_ID
+      prompt: What is your student ID (ex:S00)?
+      private: no
+
+    - name: esxi_hostname
+      prompt: What is your esxi_hostname (ex:200.200.200.250)?
+      private: no
+
+
+  tasks: 
+    - name: Create a sub folder under VM folder on given datacenter
+      community.vmware.vcenter_folder:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: no
+          datacenter: '{{ datacenter_name }}'
+          folder_type: vm
+          folder_name: '{{ student_ID }}'
+          parent_folder: '{{ folder_prefix }}'
+          state: present
+      register: sub_folder_creation_result
+      delegate_to: localhost
+
+
+    - name: Deploy VyOS ova
+      community.vmware.vmware_deploy_ovf:
+          hostname: '{{ esxi_hostname }}'
+          username: '{{ esxi_username }}'
+          password: '{{ esxi_password }}'
+          validate_certs: 'false'
+          datacenter: '{{ datacenter_name }}'
+          folder: "{{ full_folder_prefix + student_ID }}"
+#          esxi_hostname: '{{ esxi_hostname }}'
+          datastore: 'vsanDatastore'
+          name: "{{ student_ID + '-Router' }}"
+          networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
+          power_on: yes
+          ovf: /mnt/c/temp-vyos-1.4.ova    
+      delegate_to: localhost
+
+
+    - name: Waiting 60 seconds for completing bootup
+      wait_for:
+        timeout: 60
+      delegate_to: localhost
+
+
+    - name: VyOS Router Configuration
+      community.vmware.vmware_vm_shell:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+          datacenter: '{{ datacenter_name }}'
+          folder: "{{ full_folder_prefix + student_ID }}"
+          vm_id: "{{ student_ID + '-Router' }}"
+          vm_id_type: vm_name
+          vm_username: 'vyos'
+          vm_password: 'vyos'
+          vm_shell: /bin/vbash
+          vm_shell_cwd: "/tmp"
+          vm_shell_args: |-
+            -c "source /opt/vyatta/etc/functions/script-template
+            configure
+            set system login user admin full-name Admin_User
+            set system login user admin authentication plaintext-password VMware1!
+            set service ssh port 22
+            
+            set interfaces ethernet eth0 address dhcp
+            set interfaces ethernet eth0 description Outside
+            set protocols static route 0.0.0.0/0 next-hop 172.0.10.1
+            
+            set system name-server 172.0.10.2
+            set system ntp server kr.pool.ntp.org
+            
+            set interfaces ethernet eth1 vif 101 description 'VLAN 101 - Site A Management'
+            set interfaces ethernet eth1 vif 101 address 10.10.1.1/24
+            set interfaces ethernet eth1 vif 102 description 'VLAN 102 - Site A Storage'
+            set interfaces ethernet eth1 vif 102 address 10.10.2.1/24
+            
+            set nat source rule 100 outbound-interface eth0
+            set nat source rule 100 source address 10.10.1.0/24
+            set nat source rule 100 translation address masquerade
+            
+            commit
+            save"
+          wait_for_process: True
+          timeout: 180
+      delegate_to: localhost
+      register: shell_command_with_wait_timeout
