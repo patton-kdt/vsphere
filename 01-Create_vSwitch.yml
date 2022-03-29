@@ -81,6 +81,10 @@
           switch: "{{ student_ID }}"
           portgroup: "{{ student_ID + '-Storage' }}"
           vlan_id: 102
+          security:
+              promiscuous_mode: True
+              mac_changes: True
+              forged_transmits: True
       delegate_to: localhost
 
     - name: Adding Site A vMotion Portgroup
