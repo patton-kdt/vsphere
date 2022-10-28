@@ -10,17 +10,16 @@ Install-Module -Name VMware.PowerCLI
 Get-Module -Name VMware.PowerCLI -ListAvailable
 
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
-Connect-VIServer -Server 172.0.10.10 -Protocol https -User administrator@vsphere.local -Password VMware1!
+Connect-VIServer -Server 200.200.200.251 -Protocol https -User administrator@vsphere.kh -Password VMware1!
 
 
 $ParentFolder = "Students"
-$TemplateVM = "Temp-KH-IaC"
-## $LinkedSnapshot = "IaC"
-$datastores =  'Local-172.0.10.13', 'Local-172.0.10.11', 'Local-172.0.10.12'
-$hosts = '172.0.10.13', '172.0.10.11', '172.0.10.12'
+$TemplateVM = "Win-IaC"
+$datastores =  'Local-05', 'Local-01', 'Local-02', 'Local-03', 'Local-04'
+$hosts = '200.200.200.250', '200.200.200.246', '200.200.200.247', '200.200.200.248', '200.200.200.249'
 
 
-$count=0..11
+$count=0..26
 foreach ($i in $count)
 { 
   $StudentID="S" + "{0:d2}" -f $i
