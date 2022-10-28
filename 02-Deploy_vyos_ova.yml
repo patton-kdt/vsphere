@@ -8,16 +8,13 @@
   vars:
     ansible_python_interpreter: /bin/python3
     vcenter_hostname: "200.200.200.251"
-    vcenter_username: "administrator@vsphere.kh"
+    vcenter_username: "S00@vclass.kh"
     vcenter_password: "VMware1!"
-    datacenter_name: "vSAN Datacenter"
-##    esxi_hostname: "200.200.200.250"
+    datacenter_name: "Datacenter"
     esxi_username: "root"
     esxi_password: "VMware1!"
-##    student_ID: "S00"
-    folder_prefix: "Students/"
-    full_folder_prefix: "vSAN Datacenter/vm/Students/"
-    public_net: "VM Network"
+    full_folder_prefix: "Datacenter/vm/Students/"
+    public_net: "VM-200.200.200.x"
     private_net: "{{ student_ID + '-Trunk' }}"
 
 
@@ -27,26 +24,11 @@
       private: no
 
     - name: esxi_hostname
-      prompt: What is your esxi_hostname (ex:200.200.200.250)?
+      prompt: What is your esxi_hostname (ex:200.200.200.246, 200.200.200.247, 200.200.200.248, 200.200.200.249, 200.200.200.250)?
       private: no
 
 
   tasks: 
-    - name: Create a sub folder under VM folder on given datacenter
-      community.vmware.vcenter_folder:
-          hostname: '{{ vcenter_hostname }}'
-          username: '{{ vcenter_username }}'
-          password: '{{ vcenter_password }}'
-          validate_certs: no
-          datacenter: '{{ datacenter_name }}'
-          folder_type: vm
-          folder_name: '{{ student_ID }}'
-          parent_folder: '{{ folder_prefix }}'
-          state: present
-      register: sub_folder_creation_result
-      delegate_to: localhost
-
-
     - name: Deploy VyOS ova
       community.vmware.vmware_deploy_ovf:
           hostname: '{{ vcenter_hostname }}'
@@ -56,11 +38,11 @@
           datacenter: '{{ datacenter_name }}'
           folder: "{{ full_folder_prefix + student_ID }}"
           esxi_hostname: '{{ esxi_hostname }}'
-          datastore: 'vsanDatastore'
+          datastore: 'Datastore'
           name: "{{ student_ID + '-Router' }}"
           networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
           power_on: no
-          ovf: /mnt/c/temp-vyos-1.4.ova    
+          ovf: /mnt/c/Material/temp-vyos-1.4.ova    
       delegate_to: localhost
 
 
