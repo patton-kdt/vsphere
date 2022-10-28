@@ -6,12 +6,10 @@
   vars:
     ansible_python_interpreter: /bin/python3
     vcenter_hostname: "200.200.200.251"
-    vcenter_username: "administrator@vsphere.kh"
+    vcenter_username: "S00@vclass.kh"
     vcenter_password: "VMware1!"
-##    esxi_hostname: "200.200.200.250"
     esxi_username: "root"
     esxi_password: "VMware1!"
-##    student_ID: "S00"
 
   vars_prompt:
     - name: student_ID
@@ -19,7 +17,7 @@
       private: no
 
     - name: esxi_hostname
-      prompt: What is your esxi_hostname (ex:200.200.200.250)?
+      prompt: What is your esxi_hostname (ex:200.200.200.246, 200.200.200.247, 200.200.200.248, 200.200.200.249, 200.200.200.250)?
       private: no
 
   tasks: 
