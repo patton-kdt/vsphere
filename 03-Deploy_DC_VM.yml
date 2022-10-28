@@ -5,15 +5,13 @@
   vars:
     ansible_python_interpreter: /bin/python3
     vcenter_hostname: "200.200.200.251"
-    vcenter_username: "administrator@vsphere.kh"
+    vcenter_username: "S00@vclass.kh"
     vcenter_password: "VMware1!"
-    datacenter_name: "vSAN Datacenter"
-##    esxi_hostname: "200.200.200.250"
-##    student_ID: "S00"
-    full_folder_prefix: "vSAN Datacenter/vm/Students/"
-    datastore_name: "vsanDatastore"
-    template_name: "Temp-Win2019"
-    snapshot_src_name: "20220315"
+    datacenter_name: "Datacenter"
+
+    full_folder_prefix: "Datacenter/vm/Students/"
+    template_name: "Temp-WinSvr2019"
+#    snapshot_src_name: "20220315"
 
   vars_prompt:
     - name: student_ID
@@ -21,7 +19,11 @@
       private: no
 
     - name: esxi_hostname
-      prompt: What is your esxi_hostname (ex:200.200.200.250)?
+      prompt: What is your esxi_hostname (ex:200.200.200.246, 200.200.200.247, 200.200.200.248, 200.200.200.249, 200.200.200.250)?
+      private: no
+
+    - name: datastore_name
+      prompt: What is your target datastore (ex:Local-01, Local-02, Local-03, Local-04, Local-05)?
       private: no
 
 
@@ -39,8 +41,8 @@
       esxi_hostname: '{{ esxi_hostname }}'
       datastore: "{{ datastore_name }}"
       template: "{{ template_name }}"
-      linked_clone: True
-      snapshot_src: "{{ snapshot_src_name }}"
+ #     linked_clone: True
+ #     snapshot_src: "{{ snapshot_src_name }}"
       networks:
       - name: "{{ student_ID + '-Mgmt' }}"
         connected: True
