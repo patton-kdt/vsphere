@@ -10,7 +10,11 @@
     datacenter_name: "Datacenter"
 
     full_folder_prefix: "Datacenter/vm/Students/"
-    template_name: "Temp-WinSvr2019"
+#    template_name: "Temp-WinSvr2019-01"
+#    template_name: "Temp-WinSvr2019-02"
+#    template_name: "Temp-WinSvr2019-03"
+#    template_name: "Temp-WinSvr2019-04"
+    template_name: "Temp-WinSvr2019-05"
 #    snapshot_src_name: "20220315"
 
   vars_prompt:
