@@ -5,9 +5,8 @@
   vars:
     ansible_python_interpreter: /bin/python3
     vcenter_hostname: "200.200.200.251"
-    vcenter_username: "administrator@vsphere.kh"
+    vcenter_username: "S00@vclass.kh"
     vcenter_password: "VMware1!"
-##    student_ID: "S00"
 
   vars_prompt:
     - name: student_ID
