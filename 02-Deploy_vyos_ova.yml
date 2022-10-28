@@ -27,6 +27,10 @@
       prompt: What is your esxi_hostname (ex:200.200.200.246, 200.200.200.247, 200.200.200.248, 200.200.200.249, 200.200.200.250)?
       private: no
 
+    - name: datastorename
+      prompt: What is your target datastore (ex:Local-01, Local-02, Local-03, Local-04, Local-05)?
+      private: no
+
 
   tasks: 
     - name: Deploy VyOS ova
@@ -38,7 +42,7 @@
           datacenter: '{{ datacenter_name }}'
           folder: "{{ full_folder_prefix + student_ID }}"
           esxi_hostname: '{{ esxi_hostname }}'
-          datastore: 'Datastore'
+          datastore: '{{ datastorename }}'
           name: "{{ student_ID + '-Router' }}"
           networks: { 'DPG-172.0.10.x': "{{ public_net }}", 'DPG-172.0.20.x': "{{ private_net }}" }
           power_on: no
