@@ -62,6 +62,18 @@
       wait_for_customization_timeout: 900
     delegate_to: localhost
 
+  - name: Connect Network
+    community.vmware.vmware_guest_network:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter_name }}"
+      validate_certs: no
+      name: "{{ student_ID + '-DC' }}"
+      state: present
+      network_name: "{{ student_ID + '-Mgmt' }}"
+      connected: true
+    
   - name: shutdown VM to change network connection
     community.vmware.vmware_guest:
       hostname: "{{ vcenter_hostname }}"
@@ -72,6 +84,8 @@
       state: "shutdownguest"
       state_change_timeout: 60
     delegate_to: localhost
+
+
 
   - name: Poweron DC VM
     community.vmware.vmware_guest:
