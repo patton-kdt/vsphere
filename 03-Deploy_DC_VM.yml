@@ -49,6 +49,7 @@
  #     snapshot_src: "{{ snapshot_src_name }}"
       networks:
       - name: "{{ student_ID + '-Mgmt' }}"
+        label: "Network adapter 1"
         connected: True
         start_connected: True
         ip: 10.10.1.2
@@ -72,10 +73,12 @@
       datacenter: "{{ datacenter_name }}"
       validate_certs: no
       name: "{{ student_ID + '-DC' }}"
+      label: "Network adapter 1"
       state: present
       network_name: "{{ student_ID + '-Mgmt' }}"
       connected: true
-
+      start_connected: true
+    delegate_to: localhost
 
   - name: shutdown VM to change network connection
     community.vmware.vmware_guest:
