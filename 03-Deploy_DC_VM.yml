@@ -59,8 +59,10 @@
       customization:
         password: VMware1!
       wait_for_customization: yes
-      wait_for_customization_timeout: 900
+      wait_for_customization_timeout: 360
     delegate_to: localhost
+    ignore_errors: yes     
+
 
   - name: Connect Network
     community.vmware.vmware_guest_network:
@@ -73,7 +75,8 @@
       state: present
       network_name: "{{ student_ID + '-Mgmt' }}"
       connected: true
-    
+
+
   - name: shutdown VM to change network connection
     community.vmware.vmware_guest:
       hostname: "{{ vcenter_hostname }}"
